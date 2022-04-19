@@ -4,14 +4,18 @@ export const Table = () => {
 
     const [data, setData] = useState([]);
 
-    const getData = async () => {
-        const itemsData = await fetch('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/items.json')
-        const itemsArr = await itemsData.json();
-        const ordersData = await fetch('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/orders.json')
-        const ordersArr = await ordersData.json();
-        const customerData = await fetch('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/customers.json')
-        const customersArr = await customerData.json();
-  
+    const handleData = async () => {
+
+        const fetchData = async (url) => {
+            const res = await fetch(url);
+            const data = await res.json();
+            return data;
+        }
+        
+        const itemsArr = await fetchData('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/items.json');
+        const ordersArr = await fetchData('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/orders.json');
+        const customersArr = await fetchData('https://storage.googleapis.com/neta-interviews/MJZkEW3a8wmunaLv/customers.json')
+
         // copy items into order array based on id
         itemsArr.forEach(item => {
             for (let i = 0; i < ordersArr.length; i++) {
@@ -35,7 +39,7 @@ export const Table = () => {
     }
     
     useEffect(() => {
-      getData();
+        handleData();
     }, [])
     
 
